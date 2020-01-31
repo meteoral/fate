@@ -5,10 +5,16 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/PuerkitoBio/goquery"
 	"github.com/godcong/fate/config"
 	"github.com/godcong/fate/information"
 	"github.com/goextension/log"
 	"github.com/xormsharp/xorm"
+	"golang.org/x/text/encoding/simplifiedchinese"
+	"golang.org/x/text/transform"
+	"net/http"
+	"net/url"
+	"strconv"
 	"strings"
 	"time"
 
@@ -180,7 +186,56 @@ func (f *fateImpl) MakeName(ctx context.Context) (e error) {
 				log.Error("output error", "error", e)
 			}
 		} else {
-			log.Infow("Information-->", "名字", n.String(), "笔画", n.Strokes(), "拼音", n.PinYin(), "八字", f.born.Lunar().EightCharacter(), "喜用神", f.XiYong().Shen(), "本卦", ben.GuaMing, "变卦", bian.GuaMing)
+			var poems []*Poem
+			poems, e = f.db.GetPoems(poem(n.getFirstName()))
+			if e != nil {
+				return e
+			}
+			if len(poems) > 1 {
+				Url, err := url.Parse("http://m.1518.com/xingming_view.php")
+				if err != nil {
+					panic(err.Error())
+				}
+				//如果参数中有中文参数,这个方法会进行URLEncode
+				Url.RawQuery = fmt.Sprintf("word=%s&FrontType=1", url.QueryEscape(Utf8ToGBK(n.String())))
+				urlPath := Url.String()
+				resp, err := http.Get(urlPath)
+				defer resp.Body.Close()
+				// Load the HTML document
+				if resp.StatusCode != 200 {
+					log.Fatalf("status code error: %d %s", resp.StatusCode, resp.Status)
+				}
+				doc, err := goquery.NewDocumentFromReader(resp.Body)
+				if err != nil {
+					log.Fatal(err)
+				}
+
+				// Find the review items
+				doc.Find("strong").Each(func(i int, s *goquery.Selection) {
+					// For each item found, get the band and title
+					strongContent := s.Text()[0:2]
+					score, erro := strconv.Atoi(strongContent)
+					if erro != nil {
+						panic(erro.Error())
+					}
+					if score > 90 {
+						log.Infow("Information-->",
+							"分数", score,
+							"名字", n.String(),
+							"诗词量", len(poems),
+							"笔画", n.Strokes(),
+							"拼音", n.PinYin(),
+							"八字", f.born.Lunar().EightCharacter(),
+							"喜用神", f.XiYong().Shen(),
+							"本卦", ben.GuaMing,
+							"变卦", bian.GuaMing,
+							"诗名", poems[0].Poem,
+							"诗人", fmt.Sprintf("%s(%s)", poems[0].Poet, poems[0].Decade),
+							"内容", poems[0].Content,
+						)
+					}
+				})
+			}
 		}
 	}
 	return nil
@@ -279,4 +334,9 @@ func hardFilter(lucky *WuGeLucky) bool {
 		return true
 	}
 	return false
+}
+
+func Utf8ToGBK(utf8str string) string {
+	result, _, _ := transform.String(simplifiedchinese.GBK.NewEncoder(), utf8str)
+	return result
 }

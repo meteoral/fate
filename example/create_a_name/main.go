@@ -41,20 +41,20 @@ func main() {
 		},
 	})
 	//出生日期
-	born := chronos.New("2020/01/14 02:45")
-	lastName := "张"
+	born := chronos.New("2020/04/20 18:45")
+	lastName := "刘"
 	cfg := config.DefaultConfig()
 	cfg.BaguaFilter = true
 	cfg.ZodiacFilter = true
 	cfg.SupplyFilter = true
 	cfg.HardFilter = true
 	cfg.StrokeMin = 3
-	cfg.StrokeMax = 24
+	cfg.StrokeMax = 14
 	f := fate.NewFate(lastName, born.Solar().Time(), fate.DBOption(eng), fate.ConfigOption(*cfg))
 
 	//f.SetDB(eng)
 	e := f.MakeName(context.Background())
 	if e != nil {
-		t.Fatal(e)
+		//t.Fatal(e)
 	}
 }

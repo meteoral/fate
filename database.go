@@ -22,6 +22,7 @@ type Database interface {
 	InsertOrUpdateWuGeLucky(lucky *WuGeLucky) (n int64, e error)
 	GetCharacter(fn func(engine *xorm.Engine) *xorm.Session) (*Character, error)
 	GetCharacters(fn func(engine *xorm.Engine) *xorm.Session) ([]*Character, error)
+	GetPoems(fn func(engine *xorm.Engine) *xorm.Session) ([]*Poem, error)
 	FilterWuGe(last []*Character, wg chan<- *WuGeLucky) error
 	Database() interface{}
 }
@@ -48,6 +49,10 @@ func (db *xormDatabase) Sync(v ...interface{}) error {
 
 func (db *xormDatabase) GetCharacter(fn func(engine *xorm.Engine) *xorm.Session) (*Character, error) {
 	return getCharacter(db.Engine, fn)
+}
+
+func (db *xormDatabase) GetPoems(fn func(engine *xorm.Engine) *xorm.Session) ([]*Poem, error) {
+	return getPoems(db.Engine, fn)
 }
 
 func (db *xormDatabase) InsertOrUpdateWuGeLucky(lucky *WuGeLucky) (n int64, e error) {

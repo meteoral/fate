@@ -28,6 +28,14 @@ func (n Name) String() string {
 	return s
 }
 
+func (n Name) getFirstName() string {
+	var s string
+	for _, f := range n.FirstName {
+		s += f.Ch
+	}
+	return s
+}
+
 func (n Name) Strokes() string {
 	var s []string
 	for _, l := range n.LastName {

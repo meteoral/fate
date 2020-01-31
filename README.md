@@ -1,10 +1,15 @@
 # 命运：现代科学取名工具 #
-# FATE: A modern science chinese name create tool #
-## Github第一个开源的中文取名项目 ##
-## The first chinese name create tool in github ##
+## [Fork from fate](https://github.com/godcong/fate) ##
+## [Reference to ReName](https://github.com/repoog/ReName) ##
 
-## [起名算法中目前排第一个](https://www.google.com/search?q=%E8%B5%B7%E5%90%8D%E7%AE%97%E6%B3%95&oq=%E8%B5%B7%E5%90%8D%E7%AE%97%E6%B3%95&aqs=chrome..69i57.3721j0j8&sourceid=chrome&ie=UTF-8) ##
+主体算法参考自fate项目，先用fate算出符合五行的名字，再从诗词库中找出是否有符合的诗句
 
+如果有符合的诗句，再将整个名字在 http://m.1518.com/xingming_view.php 中查询名称得分，高于90分的名字通过筛选
+导出内容示例：
+
+```
+{"msg":"Information-->","分数":92,"符合的词量":3,"名字":"刘口田","笔画":"15,3,5","拼音":"[liú][kǒu][tián]","八字":["庚","子","庚","辰","癸","巳","辛","酉"],"喜用神":"木","本卦":"山地剥","变卦":"风地观","诗名":"《长安书怀》","诗人":"马戴(唐)","内容":"歧路今如此，还堪恸哭频。关中成久客，海上老诸亲。谷口田应废，乡山草又春。年年销壮志，空作献书人。"}
+```
 ### 一个好名字伴随人的一生，FATE让你取一个好名字 ###
 程序适用于单个姓或双个姓，起2个名的情况。（如：独孤**，李张**，张**，王**）  
 
