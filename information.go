@@ -212,6 +212,16 @@ func headNameOutput(heads []string, name Name, skip func(string) bool) (out []in
 			out = append(out, h, name.XiYongShen())
 		case "八字", "生辰八字":
 			out = append(out, h, name.BaZi())
+		case "分数":
+			out = append(out, h, name.getScore())
+		case "诗词量":
+			out = append(out, h, name.getPoemNum())
+		case "诗名":
+			out = append(out, h, name.getPoem())
+		case "诗人":
+			out = append(out, h, name.getPoet())
+		case "内容":
+			out = append(out, h, name.getPoemContent())
 		}
 	}
 	return
@@ -232,6 +242,16 @@ func headNameJSONOutput(heads []string, name Name, skip func(string) bool) (b []
 			out[h] = name.PinYin()
 		case "喜用神":
 			out[h] = name.XiYongShen()
+		case "分数":
+			out[h] = name.getScore()
+		case "诗词量":
+			out[h] = name.getPoemNum()
+		case "诗名":
+			out[h] = name.getPoem()
+		case "诗人":
+			out[h] = name.getPoet()
+		case "内容":
+			out[h] = name.getPoemContent()
 		}
 	}
 	by, e := json.Marshal(out)
@@ -255,6 +275,16 @@ func headNameOutputString(heads []string, name Name, skip func(string) bool) (ou
 			out = append(out, h, name.PinYin())
 		case "喜用神":
 			out = append(out, h, name.XiYongShen())
+		case "分数":
+			out = append(out, h, name.getScore())
+		case "诗词量":
+			out = append(out, h, name.getPoemNum())
+		case "诗名":
+			out = append(out, h, name.getPoem())
+		case "诗人":
+			out = append(out, h, name.getPoet())
+		case "内容":
+			out = append(out, h, name.getPoemContent())
 		}
 	}
 	return
@@ -270,6 +300,16 @@ func nameOutputString(heads []string, name Name) (out []string) {
 			out = append(out, name.PinYin())
 		case "喜用神":
 			out = append(out, name.XiYongShen())
+		case "分数":
+			out = append(out, name.getScore())
+		case "诗词量":
+			out = append(out, name.getPoemNum())
+		case "诗名":
+			out = append(out, name.getPoem())
+		case "诗人":
+			out = append(out, name.getPoet())
+		case "内容":
+			out = append(out, name.getPoemContent())
 		}
 	}
 	return

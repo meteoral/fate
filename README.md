@@ -1,5 +1,6 @@
 # 命运(Fate)
-
+## [Fork from fate](https://github.com/godcong/fate) ##
+## [Reference to ReName](https://github.com/repoog/ReName) ##
 ![Go](https://github.com/godcong/fate/workflows/Go/badge.svg)
 [![GoDoc](https://godoc.org/github.com/godcong/fate?status.svg)](http://godoc.org/github.com/godcong/fate)
 [![license](https://img.shields.io/github/license/godcong/fate.svg)](https://github.com/godcong/fate/blob/master/LICENSE)
@@ -9,6 +10,9 @@
 ## 现代科学取名工具(A modern science chinese name create tool)
   Github第一个开源的中文取名项目(The first chinese name create tool in github)  
 
+```
+{"msg":"Information-->","分数":92,"符合的词量":3,"名字":"刘口田","笔画":"15,3,5","拼音":"[liú][kǒu][tián]","八字":["庚","子","庚","辰","癸","巳","辛","酉"],"喜用神":"木","本卦":"山地剥","变卦":"风地观","诗名":"《长安书怀》","诗人":"马戴(唐)","内容":"歧路今如此，还堪恸哭频。关中成久客，海上老诸亲。谷口田应废，乡山草又春。年年销壮志，空作献书人。"}
+```
 ## 简介 ##
   一个好名字伴随人的一生，FATE让你取一个好名字
   FATE是时下最火的一款给宝宝取名的起名算法工具, 在起名算法工具中搜索排行中排第一位, 是你最好的起名助手:  [点击查看](https://www.google.com/search?q=%E8%B5%B7%E5%90%8D%E7%AE%97%E6%B3%95&oq=%E8%B5%B7%E5%90%8D%E7%AE%97%E6%B3%95&aqs=chrome..69i57.3721j0j8&sourceid=chrome&ie=UTF-8)  

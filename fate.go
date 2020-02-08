@@ -4,9 +4,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/PuerkitoBio/goquery"
 	"github.com/godcong/fate/config"
 	"github.com/goextension/log"
 	"github.com/xormsharp/xorm"
+	"golang.org/x/text/encoding/simplifiedchinese"
+	"golang.org/x/text/transform"
+	"net/http"
+	"net/url"
+	"strconv"
 	"strings"
 	"time"
 
@@ -205,11 +211,51 @@ func (f *fateImpl) MakeName(ctx context.Context) (e error) {
 			log.Infow("bian", "ming", bian.GuaMing, "chu", bian.ChuYaoJiXiong, "er", bian.ErYaoJiXiong, "san", bian.SanYaoJiXiong, "si", bian.SiYaoJiXiong, "wu", bian.WuYaoJiXiong, "liu", bian.ShangYaoJiXiong)
 		}
 
-		if err := f.out.Write(*n); err != nil {
-			return err
+		var poems []*Poem
+		poems, e = f.db.GetPoems(poem(n.getFirstName()))
+		if e != nil {
+			continue
 		}
-		if f.debug {
-			log.Infow(n.String(), "笔画", n.Strokes(), "拼音", n.PinYin(), "八字", f.born.Lunar().EightCharacter(), "喜用神", f.XiYong().Shen(), "本卦", ben.GuaMing, "变卦", bian.GuaMing)
+		log.Info(time.Now().String() + "\t get name: " + n.String())
+		if len(poems) > 0 {
+			Url, err := url.Parse("http://m.1518.com/xingming_view.php")
+			if err != nil {
+				panic(err.Error())
+			}
+			//如果参数中有中文参数,这个方法会进行URLEncode
+			Url.RawQuery = fmt.Sprintf("word=%s&FrontType=1", url.QueryEscape(Utf8ToGBK(n.String())))
+			urlPath := Url.String()
+			resp, err := http.Get(urlPath)
+			defer resp.Body.Close()
+			// Load the HTML document
+			if resp.StatusCode != 200 {
+				log.Fatalf("status code error: %d %s", resp.StatusCode, resp.Status)
+			}
+			doc, err := goquery.NewDocumentFromReader(resp.Body)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			// Find the review items
+			doc.Find("strong").Each(func(i int, s *goquery.Selection) {
+				// For each item found, get the band and title
+				strongContent := s.Text()[0:2]
+				score, erro := strconv.Atoi(strongContent)
+				if erro != nil {
+					panic(erro.Error())
+				}
+				n.poemNum = len(poems)
+				n.score = score
+				n.poem = *poems[0]
+				if score > 90 {
+					if err := f.out.Write(*n); err != nil {
+						log.Fatal(err)
+					}
+					if f.debug {
+						log.Infow(n.String(), "笔画", n.Strokes(), "拼音", n.PinYin(), "八字", f.born.Lunar().EightCharacter(), "喜用神", f.XiYong().Shen(), "本卦", ben.GuaMing, "变卦", bian.GuaMing)
+					}
+				}
+			})
 		}
 	}
 	return nil
@@ -334,4 +380,9 @@ func hardFilter(lucky *WuGeLucky) bool {
 		return true
 	}
 	return false
+}
+
+func Utf8ToGBK(utf8str string) string {
+	result, _, _ := transform.String(simplifiedchinese.GBK.NewEncoder(), utf8str)
+	return result
 }

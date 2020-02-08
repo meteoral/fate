@@ -1,10 +1,13 @@
 package main
 
 import (
+	"bufio"
 	"context"
+	"fmt"
 	"github.com/godcong/chronos"
 	"github.com/godcong/fate"
 	"github.com/godcong/fate/config"
+	"os"
 )
 
 func main() {
@@ -41,9 +44,13 @@ func main() {
 	//	},
 	//})
 	//出生日期
-	born := chronos.New("2020/01/14 02:45")
+	fmt.Println("Enter Date(ex: 2020/02/01 18:16): ")
+	reader := bufio.NewReader(os.Stdin)
+	text, _ := reader.ReadString('\n')
+	born := chronos.New(text)
+
 	//姓氏
-	lastName := "张"
+	lastName := "刘"
 	cfg := config.DefaultConfig()
 	cfg.BaguaFilter = true
 	cfg.ZodiacFilter = true
@@ -55,7 +62,7 @@ func main() {
 		Host:         "localhost",
 		Port:         "3306",
 		User:         "root",
-		Pwd:          "111111",
+		Pwd:          "***",
 		Name:         "fate",
 		MaxIdleCon:   0,
 		MaxOpenCon:   0,

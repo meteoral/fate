@@ -1,6 +1,7 @@
 package fate
 
 import (
+	"fmt"
 	"github.com/godcong/chronos"
 	"github.com/godcong/yi"
 	"strconv"
@@ -15,6 +16,9 @@ type Name struct {
 	baZi        *BaZi
 	baGua       *yi.Yi //周易八卦
 	zodiac      *Zodiac
+	score       int  // 网络名称评分
+	poemNum     int  // 包含的诗词量
+	poem        Poem // 诗词
 	zodiacPoint int
 }
 
@@ -24,6 +28,14 @@ func (n Name) String() string {
 	for _, l := range n.LastName {
 		s += l.Ch
 	}
+	for _, f := range n.FirstName {
+		s += f.Ch
+	}
+	return s
+}
+
+func (n Name) getFirstName() string {
+	var s string
 	for _, f := range n.FirstName {
 		s += f.Ch
 	}
@@ -71,6 +83,26 @@ func (n Name) WuXing() string {
 // XiYongShen ...
 func (n Name) XiYongShen() string {
 	return n.baZi.XiYongShen()
+}
+
+func (n Name) getScore() string {
+	return fmt.Sprintf("%d", n.score)
+}
+
+func (n Name) getPoet() string {
+	return fmt.Sprintf("%s(%s)", n.poem.Poet, n.poem.Decade)
+}
+
+func (n Name) getPoem() string {
+	return n.poem.Poem
+}
+
+func (n Name) getPoemContent() string {
+	return n.poem.Content
+}
+
+func (n Name) getPoemNum() string {
+	return fmt.Sprintf("%d", n.poemNum)
 }
 
 func createName(impl *fateImpl, f1 *Character, f2 *Character) *Name {
