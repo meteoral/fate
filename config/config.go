@@ -47,7 +47,7 @@ type Config struct {
 }
 
 var DefaultJSONPath = ""
-var DefaultHeads = []string{"姓名", "笔画", "拼音", "喜用神", "八字"}
+var DefaultHeads = []string{"分数", "姓名", "诗词量", "笔画", "拼音", "喜用神", "八字", "诗名", "诗人", "内容"}
 
 func init() {
 	if DefaultJSONPath == "" {

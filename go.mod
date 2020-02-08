@@ -1,6 +1,7 @@
 module github.com/godcong/fate
 
 require (
+	github.com/PuerkitoBio/goquery v1.5.0
 	github.com/go-sql-driver/mysql v1.4.1
 	github.com/godcong/chronos v0.0.3
 	github.com/godcong/yi v1.0.2
@@ -12,6 +13,7 @@ require (
 	github.com/xormsharp/xorm v1.0.0
 	go.uber.org/zap v1.13.0
 	golang.org/x/crypto v0.0.0-20190605123033-f99c8df09eb5 // indirect
+	golang.org/x/text v0.3.2
 )
 
 go 1.13
