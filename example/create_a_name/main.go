@@ -1,13 +1,10 @@
 package main
 
 import (
-	"bufio"
 	"context"
-	"fmt"
 	"github.com/godcong/chronos"
 	"github.com/godcong/fate"
 	"github.com/godcong/fate/config"
-	"os"
 )
 
 func main() {
@@ -44,10 +41,11 @@ func main() {
 	//	},
 	//})
 	//出生日期
-	fmt.Println("Enter Date(ex: 2020/02/01 18:16): ")
-	reader := bufio.NewReader(os.Stdin)
-	text, _ := reader.ReadString('\n')
-	born := chronos.New(text)
+	//fmt.Println("Enter Date(ex: 2020/02/01 18:16): ")
+	//reader := bufio.NewReader(os.Stdin)
+	//text, _ := reader.ReadString('\n')
+	//born := chronos.New(text)
+	born := chronos.New("2020/04/20 20:20")
 
 	//姓氏
 	lastName := "刘"
